@@ -1,0 +1,5 @@
+/* Shared Tisso typefaces (Figma: Jost + Lustria) */
+:root {
+  --tisso-font-jost: 'Jost', sans-serif;
+  --tisso-font-lustria: 'Lustria', serif;
+}
