@@ -1,0 +1,132 @@
+{% comment %}
+  Banner section - Figt Guide her content + bottom bar.
+  Editable: title, description, button, background image, footer texts, footer color
+{% endcomment %}
+
+{% render 'tisso-fonts' %}
+{{ 'section-tisso-banner.css' | asset_url | stylesheet_tag }}
+
+<section
+  id="TissoBanner-{{ section.id }}"
+  class="tisso-banner"
+  style="--tisso-banner-bar: {{ section.settings.footer_bar_color }};"
+>
+  <div class"tisso-barnner__hero">
+    <div class="tisso-banner__media" aria-hidden="true">
+      {%- if section.settings.background_image != blank -%}
+        {{ 
+          section.settings.background_image
+          | image_url: width: 3840
+          | image_tag:
+            loading: 'eager',
+            widths: '750, 110, 1500, 2000, 3000, 3840',
+            sizes: '100vw',
+            alt: ''
+        }}
+      {%- else -%}
+        {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+
+    <div class="tisso-banner_content">
+      {%- if section.settings.title != blank -%}
+        <h2 class="tisso-banner__title">{{ section.settings.title | escape }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <div class="tisso-banner__description">{{section.settings.description }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a
+          class="tisso-banner__button"
+          href="{{ section.settings.button_link | default: '#' }}"
+          {%  if section.settings.button_link == blank %}
+            aria-disabled="true"
+          {%  endif %}
+        >
+          <span class="tisso-banner__button-label">{{ section.settings.button_label | escape }}</span>
+          <span class="tisso-banner__button-arrow" aria-hidden="true">→</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.footer_text_desktop != blank or section.settings.footer_text_mnobile != blank -%}
+    <div class="tisso-banner__bar">
+      {%- if section.settings.footer_text_desktop != blank -%}
+        <p class="tisso-banner__bar-text tisso-banner__bar-text--desktop">
+          {{ section.settings.footer_text_desktop | escape }}
+        </p>
+      {%- endif -%}
+      <p class="tisso-banner__bar-text tisso-banner__bar-text--mobile">
+        {{ section.settings.footer_text_mobile | default: section.settings.footer_text_desktop | escape }}
+      </p>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Banner",
+  "tag": "div",
+  "class": "section-tisso-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "The Gift Guide"
+    },
+    {
+      "type": "richtext",
+      "id":"description",
+      "label": "Description",
+      "default": "<p>Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Footer bar"
+    },
+    {
+      "type": "text",
+      "id": "footer_text_desktop",
+      "label": "Footer text (desktop)",
+      "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+    },
+    {
+      "type": "text",
+      "id": "footer_text_mobile",
+      "label": "Footer text (mobile)",
+      "default": "SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR"
+    },
+    {
+      "type": "color",
+      "id": "footer_bar_color",
+      "label": "Footer bar background",
+      "default": "#ECECEC"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner"
+    }
+  ]
+}
+{% endschema %}
