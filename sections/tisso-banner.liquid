@@ -11,7 +11,7 @@
   class="tisso-banner"
   style="--tisso-banner-bar: {{ section.settings.footer_bar_color }};"
 >
-  <div class"tisso-barnner__hero">
+  <div class="tisso-banner__hero">
     <div class="tisso-banner__media" aria-hidden="true">
       {%- if section.settings.background_image != blank -%}
         {{ 
@@ -28,7 +28,7 @@
       {%- endif -%}
     </div>
 
-    <div class="tisso-banner_content">
+    <div class="tisso-banner__content">
       {%- if section.settings.title != blank -%}
         <h2 class="tisso-banner__title">{{ section.settings.title | escape }}</h2>
       {%- endif -%}

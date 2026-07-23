@@ -69,6 +69,7 @@
   margin: 0 0 2.8rem;
   max-width: 44rem;
   font-size: 20px;
+  font-weight: 400;
   line-height: 140%;
   letter-spacing: 0.01em;
 }
@@ -76,6 +77,7 @@
 .tisso-banner__button {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   min-height: 4.4rem;
   padding: 1.1rem 2.2rem;
@@ -96,7 +98,7 @@
 .tisso-banner__button-label,
 .tisso-banner__button-arrow {
   display: inline-block;
-  transition: transform 0.35s cubis-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .tisso-banner__button-arrow {
