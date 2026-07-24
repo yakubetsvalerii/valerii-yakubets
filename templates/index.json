@@ -19,11 +19,21 @@
         "button_link": "",
         "footer_text_desktop": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL",
         "footer_text_mobile": "SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR",
-        "footer_bar_color": "#ECECEC"
+        "footer_bar_color": "#ececec"
+      }
+    },
+    "tisso_collection_P6TUWi": {
+      "type": "tisso-collection",
+      "name": "Collection grid",
+      "settings": {
+        "heading": "Tisso vison in the wild",
+        "collection": "",
+        "soft_winter_jacket": ""
       }
     }
   },
   "order": [
-    "tisso_banner_QQyJFm"
+    "tisso_banner_QQyJFm",
+    "tisso_collection_P6TUWi"
   ]
 }
