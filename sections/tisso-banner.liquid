@@ -34,7 +34,13 @@
       {%- endif -%}
 
       {%- if section.settings.description != blank -%}
-        <div class="tisso-banner__description">{{section.settings.description }}</div>
+        <div class="tisso-banner__description tisso-banner__description--desktop">{{section.settings.description }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.description__mobile != blank or section.settings.description != blank -%}
+        <div class="tisso-banner__description tisso-banner__description--mobile">
+          {{ section.settings.description_mobile | default: section.settings.description }}
+        </div>
       {%- endif -%}
 
       {%- if section.settings.button_label != blank -%}
@@ -85,9 +91,15 @@
     },
     {
       "type": "richtext",
-      "id":"description",
-      "label": "Description",
+      "id": "description",
+      "label": "Description (desktop)",
       "default": "<p>Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "description_mobile",
+      "label": "Description (mobile)",
+      "default": "<p>Discover Joy: Your Ultimate Holiday Gift Destination.</p>"
     },
     {
       "type": "text",

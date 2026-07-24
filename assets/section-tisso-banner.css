@@ -74,6 +74,10 @@
   letter-spacing: 0.01em;
 }
 
+.tisso-banner__description--mobile {
+  display: none;
+}
+
 .tisso-banner__button {
   display: inline-flex;
   align-items: center;
@@ -170,6 +174,14 @@
     margin-right: auto;
     max-width: 32rem;
     font-size: 16px;
+  }
+
+  .tisso-banner__description--desktop {
+    display: none;
+  }
+
+  .tisso-banner__description--mobile {
+    display: block;
   }
 
   .tisso-banner__bar {
