@@ -27,7 +27,7 @@
       "name": "Collection grid",
       "settings": {
         "heading": "Tisso vison in the wild",
-        "collection": "",
+        "collection": "test-products",
         "soft_winter_jacket": ""
       }
     }
