@@ -30,9 +30,53 @@
         "padding_top": 20,
         "padding_bottom": 20
       }
+    },
+    "tisso_header_YkichT": {
+      "type": "tisso-header",
+      "blocks": {
+        "menu_link_bdaBWc": {
+          "type": "menu_link",
+          "settings": {
+            "label": "Shop",
+            "link": ""
+          }
+        },
+        "menu_link_xiYHBE": {
+          "type": "menu_link",
+          "settings": {
+            "label": "Gift guide",
+            "link": ""
+          }
+        },
+        "menu_link_R9FtqH": {
+          "type": "menu_link",
+          "settings": {
+            "label": "About",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "menu_link_bdaBWc",
+        "menu_link_xiYHBE",
+        "menu_link_R9FtqH"
+      ],
+      "name": "Header",
+      "settings": {
+        "background_color": "#FFFFFF",
+        "logo_text": "TISSO VISON",
+        "logo_link": "",
+        "announcement_text": "Find the ideal gift for your loved ones.",
+        "button_label": "CHOOSE GIFT",
+        "button_link": "",
+        "button_color": "#FFE600",
+        "menu_aria_label": "Menu",
+        "menu_close_label": "Close menu"
+      }
     }
   },
   "order": [
-    "header"
+    "header",
+    "tisso_header_YkichT"
   ]
 }
