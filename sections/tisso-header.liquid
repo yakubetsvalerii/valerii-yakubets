@@ -1,0 +1,222 @@
+{% comment %}
+  Header section - logo, announcement, Choose Figt CTA, mobile menu.
+  All copy and colors are editable from the customizer.
+{% endcomment %}
+
+{% render 'tisso-fonts' %}
+{{ 'sectoin-tisso-header.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-tisso-header.js' | asset_url }}" defer></script>
+
+<header
+  id="TissoHeader-{{ section.id }}"
+  class="tisso-header"
+  data-tisso-header
+  style="
+    --tisso-header-bg: {{ section.settings.background_color }};
+    --tisso-header-btn: {{ section.settings.button_color }};
+  "
+>
+  <div class="tisso-header__bar">
+    <button
+      type="button"
+      class="tisso-header__menu-toggle"
+      data-tisso-header-toggle
+      aria-expanded="false"
+      aria-controls="TissoHeaderDrawer-{{ section.id }}"
+      aria-label="{{ section.settings.menu_aria_label | escape }}"
+    >
+      <span></span>
+    </button>
+
+    <p class="tisso-header__logo">
+      {%- if section.settings.logo_link != blank -%}
+        <a href="{{ section.settings.logo_link }}">{{ section.settings.logo_text | escape }}</a>
+      {%- else -%}
+        {{ section.settings.logo_text | escape }}
+      {%- endif -%}
+    </p>
+
+    {%- if section.settings.announcement_text != blank -%}
+      <p class="tisso-header__announcement">{{ section.settings.announcement_text | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <a
+        class="tisso-header__button"
+        href="{{ section.settings.button_link | default: '#' }}"
+      >
+        <span class="tisso-header__button-label">{{section.settings.button_label | escape }}</span>
+        <span class="tisso-header__button-arrow" aria-hidden="true">→</span>
+      </a>
+    {%- endif -%}
+  </div>
+
+  <div
+    id="TissoHeaderDrawer-{{ section.id }}"
+    class="tisso-header__drawer"
+    data-tisso-header-drawer
+    aria-hidden="true"
+  >
+    <button
+      type="button"
+      class="tisso-header__drawer-overlay"
+      data-tisso-header-close
+      aria-label="{{section.settings.menu_close_label | escape }}"
+    ></button>
+
+    <div class="tisso-header__drawer-panel" role="dialog" aria-modal="true" aria-label="{{ section.settings.menu_aria_label | escape }}">
+      <div class="tisso-header__drawer-top">
+        <button
+          type="button"
+          class="tisso-header__drawer-close"
+          data-tisso-header-close
+          aria-label="{{ section.settings.menu_clse_label | escape }}"
+        >
+          x
+        </button>
+        <p class=tisso-header__drawer-logo>{{ section.settings.logo_text | escape }}</p>
+        <span style="width: 4rem;" aria-hidden="true"></span>
+      </div>
+
+      <div class="tisso-header__drawer-body">
+        {%- if section.settings.announcement_text != blank -%}
+          <p class="tisso-header__drawer-announcement">{{ section.settings.announcement_text | escape }}</p>
+        {%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          <ul class="tisso-header__drawer-nav">
+            {%- for block in section.blocks -%}
+              {%- if block.settings.label != blank -%}
+                <li {{ block.shopify_attributes }}>
+                  <a href="{{ block.settings.link | default: '#' }}">
+                    {{ block.settings.label | escape }}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <a
+            class="tisso-header__button tisso-header__drawer-button"
+            href="{{ section.settings.button_link | default: '#' }}"
+          >
+            <span class="tisso-header__button-label">{{ section.settings.button_label | escape }}</span>
+            <span class="tisso-header__button-arrow" aria-hidden="true">→</span>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "div",
+  "class": "section-tisso-header",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text",
+      "default": "TISSO VISON"
+    },
+    {
+      "type": "url",
+      "id": ";logo_link",
+      "label": "Logo link"
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "Fiond Find the ideal gift for your loved ones."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "CHOOSE GIFT"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button color",
+      "default": "#FFE600"
+    },
+    {
+      "type": "header",
+      "content": "Mobile menu"
+    },
+    {
+      "type": "text",
+      "id": "menu_aria_label",
+      "label": "Menu accessibility label",
+      "default": "Menu"
+    },
+    {
+      "type": "text",
+      "id": "menu_close_label",
+      "label": "CLose button label",
+      "default": "Close menu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu_link",
+      "name": "Menu link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Shop"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header",
+      "blocks": [
+        {
+          "type": "menu_link",
+          "settings": {
+            "label": "Shop"
+          }
+        },
+        {
+          "type": "menu_link",
+          "settings": {
+            "label": "Gift guide"
+          }
+        },
+        {
+          "type": "menu_link",
+          "settings": {
+            "label": "About"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
