@@ -73,7 +73,7 @@
   color: var(--tisso-header-black);
   font-family: inherit;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.08em;
   text-decoration: none;
   text-transform: uppercase;
@@ -246,7 +246,7 @@ body.tisso-header-menu-open {
   overflow: hidden;
 }
 
-@media scren and (max-width: 749px) {
+@media screen and (max-width: 749px) {
   .tisso-header__bar {
     min-height: 5.6rem;
     padding: 1rem 1.6rem;
