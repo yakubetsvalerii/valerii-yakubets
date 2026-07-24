@@ -1,4 +1,4 @@
-/* Figt Guide banner - built from scratch */
+/* Gift Guide banner — built from scratch */
 
 .tisso-banner {
   --tisso-banner-black: #000;
@@ -59,18 +59,18 @@
 .tisso-banner__title {
   margin: 0 0 1.6rem;
   font-family: var(--tisso-font-jost), 'Jost', sans-serif;
-  font-size: 70px;
-  font-weight: 500;
+  font-size: clamp(3.6rem, 5vw, 5.6rem);
+  font-weight: 700;
   letter-spacing: -0.02em;
-  line-height: 100%;
+  line-height: 1.05;
 }
 
 .tisso-banner__description {
   margin: 0 0 2.8rem;
   max-width: 44rem;
-  font-size: 20px;
+  font-size: 1.5rem;
   font-weight: 400;
-  line-height: 140%;
+  line-height: 1.55;
   letter-spacing: 0.01em;
 }
 
@@ -89,10 +89,10 @@
   background: var(--tisso-banner-black);
   color: var(--tisso-banner-white);
   font-family: inherit;
-  font-size: 16px;
-  line-height: 20.48px;
-  font-weight: 400;
+  font-size: 1.3rem;
+  font-weight: 700;
   letter-spacing: 0.08em;
+  line-height: 1;
   text-decoration: none;
   text-transform: uppercase;
   cursor: pointer;
@@ -142,12 +142,12 @@
 
 .tisso-banner__bar-text {
   margin: 0;
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-align: center;
-  line-height: 13.42px;
+  line-height: 1.4;
 }
 
 .tisso-banner__bar-text--mobile {
@@ -156,24 +156,35 @@
 
 @media screen and (max-width: 749px) {
   .tisso-banner__hero {
-    min-height: 36rem;
+    align-items: stretch;
+    min-height: 52rem;
+  }
+
+  .tisso-banner__media img,
+  .tisso-banner__media .placeholder-svg {
+    object-position: center center;
   }
 
   .tisso-banner__content {
-    padding: 3.2rem 2rem;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
     max-width: none;
+    min-height: 100%;
+    padding: 2.4rem 2rem 0;
+    text-align: center;
   }
 
   .tisso-banner__title {
-    font-size: 30px;
+    margin-bottom: 1rem;
+    font-size: 3.2rem;
   }
 
   .tisso-banner__description {
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
     max-width: 32rem;
-    font-size: 16px;
+    font-size: 1.4rem;
   }
 
   .tisso-banner__description--desktop {
@@ -184,13 +195,31 @@
     display: block;
   }
 
+  /* Sit the CTA over the illustration, below the top copy */
+  .tisso-banner__button {
+    position: absolute;
+    left: 50%;
+    top: 62%;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+  }
+
+  .tisso-banner__button:hover,
+  .tisso-banner__button:focus-visible {
+    transform: translate(-50%, calc(-50% - 2px));
+  }
+
+  .tisso-banner__button:active {
+    transform: translate(-50%, -50%);
+  }
+
   .tisso-banner__bar {
     min-height: 3.6rem;
     padding: 1rem 1.6rem;
   }
 
   .tisso-banner__bar-text {
-    font-size: 1trem;
+    font-size: 1rem;
     letter-spacing: 0.06em;
   }
 
