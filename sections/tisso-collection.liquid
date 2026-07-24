@@ -1,0 +1,202 @@
+{% comment %}
+  Collection grid - 3x2 product tiles with hover "+" hotspot and quick-view modal.
+  Products are loaded from the selected collection (up to 6).
+{% endcomment %}
+
+{% render 'tisso-fonts' %}
+{{ 'section-tisso-collection.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-tisso-collection.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign section_collection = section.settings.collection
+  assign bonus_product = section.settings.soft_winter_jacket
+  assign bonus_variant_id = blank
+
+  if bonus_product != blank
+    assign bonus_variant_id = bonus_product.selected_or_first_available_variant.id
+  else
+    assign bonus_fallback = all_products['soft-winter-jacket']
+    if bonus_fallback != blank
+      assign bonus_variant_id = bonus_fallback.selected_or_first_available_variant.id
+    endif
+  endif
+-%}
+
+<section
+  id="TissoCollection-{{ section.id }}"
+  class="tisso-collection"
+  data-tisso-collection
+  data-bonus-variant-id="{{ bonus_variant_id }}"
+  data-products-limit="6"
+  {% if section_collection != blank %}
+    data-collection-handle="{{ section_collection.handle | escape }}"
+  {% endif %}
+>
+  {%- if section.settings.heading != blank -%}
+    <h2 class="tisso-collection__heading">{{ section.settings.heading | escape }}</h2>
+  {%- endif -%}
+
+  {%- if section_collection != blank -%}
+    <ul class="tisso-collection__grid" data-tisso-grid role="list">
+      {%- comment -%}
+        Sever-render as many products as Liquid provides (fallback / no-JS).
+        JS then loads /collections/{handle}/products.json to ensure up to 6 tiles.
+      {%- endcomment -%}
+      {%- for collection_product in section_collection.products limit: 6 -%}
+        {%- liquid
+          assign hotspot_x = collection_product.metafields.custom.hotspot_x.value | default: 50
+          assign hotspot_y = collection_product.metafields.custom.hotspot_y.value | default: 50
+        -%}
+        <li
+          class="tisso-collection__item"
+          data-tisso-product-item
+          data-product-id="{{collection_product.id }}"
+        >
+          {%- if collection_product.featured_media != blank -%}
+            {%- liquid
+              assign image_alt = collection_product.featured_media.alt
+              if image_alt == blank
+                assign image_alt = collection_product.title
+              endif
+            -%}
+            {{
+              collection_product.featured_media
+              | image_url: width: 1200
+              | image_tag:
+                class: 'tisso-collection__image',
+                loading: 'lazy',
+                widths: '400, 600, 800, 1000, 1200',
+                sizes: '(max-width: 749px) 50vw, 33vw',
+                alt: image_alt
+            }}
+          {%- else -%}
+            {{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+
+          <button
+            type="button"
+            class="tisso-collection__hotspot"
+            data-tisso-hotspot
+            style="--hotspot-x: {{ hotspot_x }}%; --hotspot-y: {{ hotspot_y }}%;"
+            aria-label="Quick view {{ collection_product.title | escape }}"
+          >
+            <span aria-hidden="true">+</span>
+          </button>
+        </li>
+      {%- else -%}
+        <li class="tisso-collection__empty-item">
+          <p class="tisso-collection__empty">This collection has no products yet.</p>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    {%- comment -%}Payload used when JS hydrates the grid from the collection Ajax API.{%- endcomment -%}
+    <script type="application/json" data-tisso-products-bootstrap>
+      [
+        {%- for collection_product in section_collection.products limit: 6 -%}
+          {%- liquid
+            assign hotspot_x = collection_product.metafields.custom.hotspot_x.value | default: 50
+            assign hotspot_y = collection_product.metafields.custom.hotspot_y.value | default: 50
+          -%}
+          {
+            "id": {{ collection_product.id | json }},
+            "title": {{ collection_product.title | json }},
+            "description": {{ collection_product.description | strip_html | truncate: 220 | json }},
+            "price": {{ collection_product.price | json }},
+            "featured_image": {% if collection_product.featured_media %}{{ collection_product.featured_media | image_url: width: 1200 | json }}{% else %}""{% endif %},
+            "hotspot_x": {{ hotspot_x | json }},
+            "hotspot_y": {{ hotspot_y | json }},
+            "options": [
+              {%- for option in collection_product.options_with_values -%}
+                {
+                  "name": {{ option.name | json }},
+                  "values": {{ option.values | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ],
+            "variants": [
+              {%- for variant in collection_product.variants -%}
+                {
+                  "id": {{ variant.id | json }},
+                  "title": {{ variant.title | json }},
+                  "available": {{ variant.available | json }},
+                  "price": {{ variant.price | json }},
+                  "option1": {{ variant.option1 | json }},
+                  "option2": {{ variant.option2 | json }}
+                  "option3": {{ variant.option3 | json }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ]
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    </script>
+  {%- else -%}
+    <p class="tisso-collection__empty">Select a collection to display products.</p>
+  {%- endif -%}
+
+  <div
+    class="tisso-popup"
+    data-tisso-popup
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="TissoPopupTitle-{{ section.id }}"
+  >
+    <button type="button" class="tisso-popup__overlay" data-tisso-popup-close aria-label="Close dialog"></button>
+
+    <div class="tisso-popup__dialog">
+      <button type="button" class="tisso-popup__close" data-tisso-popup-close aria-label="Close">x</button>
+
+      <div class="tisso-popup__header">
+        <img class="tisso-popup__thumb" data-tisso-popup-thumb src="" alt="" width="104" height="104" hidden>
+        <div>
+          <h3 class="tisso-popup__title" id="TissoPopupTitle-{{ section.id }}" data-tisso-popup-title></h3>
+          <p class="tisso-popup__price" data-tisso-poup-price></p>
+          <p class="tisso-poup__description" data-tisso-popup-description></p>
+        </div>
+      </div>
+
+      <div class="tisso-poup__options" data-tisso-popup-options></div>
+      <p class="tisso-popup__error" data-tisso-popup-error role="alert" aria-live="polite"></p>
+
+      <button type="button" class="tisso-popup__ad" data-tisso-popup-add disabled>
+        <span>ADD TO CART</span>
+        <span class="tisso-popup__add-arrow" aria-hidden="true">→</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection grid",
+  "tag": "div",
+  "class": "section-tisso-collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Tisso vison in the wild"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Displays up to 6 products from this collection. Position each + icon with product metafields custom.hotspot_x and custom.hotspot_y (0-100)."
+    },
+    {
+      "type": "product",
+      "id": "soft_winter_jacket",
+      "label": "Soft Winter Jakcet (auto-add)",
+      "info": "Also added to cart when a product is added with Black + Medium selected."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection grid"
+    }
+  ]
+}
+{% endschema %}
