@@ -1,18 +1,18 @@
 /**
- * Tisso Collection - load up to 6 products from a collection, hotspot quick-view,
+ * Tisso Collection — load up to 6 products from a collection, hotspot quick-view,
  * variant selection, and Add to Cart (vanilla JS).
- * 
+ *
  * Products are fetched from /collections/{handle}/products.json so the grid
- * is not limited by Liquid pagination quirks
+ * is not limited by Liquid pagination quirks.
  */
 (function () {
   'use strict';
-  
+
   var PRODUCTS_LIMIT = 6;
 
   function formatMoney(cents) {
     if (typeof Shopify !== 'undefined' && typeof Shopify.formatMoney === 'function') {
-      return Shopify.formatMoney(cents, windows.theme && window.theme.moneyFormat);
+      return Shopify.formatMoney(cents, window.theme && window.theme.moneyFormat);
     }
     return (Number(cents) / 100).toFixed(2).replace('.', ',') + '€';
   }
@@ -84,9 +84,13 @@
 
   function truncate(text, max) {
     if (!text || text.length <= max) return text || '';
-    return text.slice(0, max - 1).trim() + '...';
+    return text.slice(0, max - 1).trim() + '…';
   }
 
+  /**
+   * Normalize Ajax /collections/.../products.json product into our modal shape.
+   * Ajax prices are dollar strings; convert to cents.
+   */
   function normalizeAjaxProduct(product) {
     var options = (product.options || []).map(function (option) {
       if (typeof option === 'string') {
@@ -98,6 +102,7 @@
       };
     });
 
+    // If option values were omitted, derive them from variants
     options.forEach(function (option, index) {
       if (option.values.length) return;
       var key = 'option' + (index + 1);
@@ -114,12 +119,12 @@
 
     var image =
       product.featured_image ||
-      (product.iamge && product.images[0] && (product.images[0].src || product.images[0])) ||
+      (product.images && product.images[0] && (product.images[0].src || product.images[0])) ||
       '';
-    
+
     return {
       id: product.id,
-      title: product.title,
+      title: product.title || '',
       description: truncate(stripHtml(product.body_html || product.description || ''), 220),
       price: toCents(product.price || (product.variants && product.variants[0] && product.variants[0].price)),
       featured_image: image,
@@ -132,7 +137,7 @@
           price: toCents(variant.price),
           option1: variant.option1,
           option2: variant.option2,
-          option3: variant.option3,          
+          option3: variant.option3,
         };
       }),
     };

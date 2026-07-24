@@ -1,5 +1,5 @@
 {% comment %}
-  Collection grid - 3x2 product tiles with hover "+" hotspot and quick-view modal.
+  Collection grid — 3x2 product tiles with hover "+" hotspot and quick-view modal.
   Products are loaded from the selected collection (up to 6).
 {% endcomment %}
 
@@ -39,7 +39,7 @@
   {%- if section_collection != blank -%}
     <ul class="tisso-collection__grid" data-tisso-grid role="list">
       {%- comment -%}
-        Sever-render as many products as Liquid provides (fallback / no-JS).
+        Server-render as many products as Liquid provides (fallback / no-JS).
         JS then loads /collections/{handle}/products.json to ensure up to 6 tiles.
       {%- endcomment -%}
       {%- for collection_product in section_collection.products limit: 6 -%}
@@ -50,7 +50,7 @@
         <li
           class="tisso-collection__item"
           data-tisso-product-item
-          data-product-id="{{collection_product.id }}"
+          data-product-id="{{ collection_product.id }}"
         >
           {%- if collection_product.featured_media != blank -%}
             {%- liquid
@@ -122,7 +122,7 @@
                   "available": {{ variant.available | json }},
                   "price": {{ variant.price | json }},
                   "option1": {{ variant.option1 | json }},
-                  "option2": {{ variant.option2 | json }}
+                  "option2": {{ variant.option2 | json }},
                   "option3": {{ variant.option3 | json }}
                 }{%- unless forloop.last -%},{%- endunless -%}
               {%- endfor -%}
@@ -146,21 +146,21 @@
     <button type="button" class="tisso-popup__overlay" data-tisso-popup-close aria-label="Close dialog"></button>
 
     <div class="tisso-popup__dialog">
-      <button type="button" class="tisso-popup__close" data-tisso-popup-close aria-label="Close">x</button>
+      <button type="button" class="tisso-popup__close" data-tisso-popup-close aria-label="Close">×</button>
 
       <div class="tisso-popup__header">
         <img class="tisso-popup__thumb" data-tisso-popup-thumb src="" alt="" width="104" height="104" hidden>
         <div>
           <h3 class="tisso-popup__title" id="TissoPopupTitle-{{ section.id }}" data-tisso-popup-title></h3>
-          <p class="tisso-popup__price" data-tisso-poup-price></p>
-          <p class="tisso-poup__description" data-tisso-popup-description></p>
+          <p class="tisso-popup__price" data-tisso-popup-price></p>
+          <p class="tisso-popup__description" data-tisso-popup-description></p>
         </div>
       </div>
 
-      <div class="tisso-poup__options" data-tisso-popup-options></div>
+      <div class="tisso-popup__options" data-tisso-popup-options></div>
       <p class="tisso-popup__error" data-tisso-popup-error role="alert" aria-live="polite"></p>
 
-      <button type="button" class="tisso-popup__ad" data-tisso-popup-add disabled>
+      <button type="button" class="tisso-popup__add" data-tisso-popup-add disabled>
         <span>ADD TO CART</span>
         <span class="tisso-popup__add-arrow" aria-hidden="true">→</span>
       </button>
@@ -184,12 +184,12 @@
       "type": "collection",
       "id": "collection",
       "label": "Collection",
-      "info": "Displays up to 6 products from this collection. Position each + icon with product metafields custom.hotspot_x and custom.hotspot_y (0-100)."
+      "info": "Displays up to 6 products from this collection. Position each + icon with product metafields custom.hotspot_x and custom.hotspot_y (0–100)."
     },
     {
       "type": "product",
       "id": "soft_winter_jacket",
-      "label": "Soft Winter Jakcet (auto-add)",
+      "label": "Soft Winter Jacket (auto-add)",
       "info": "Also added to cart when a product is added with Black + Medium selected."
     }
   ],

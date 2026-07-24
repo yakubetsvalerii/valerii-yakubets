@@ -1,12 +1,12 @@
-/* Collection grid + product quick-view modal - built from scratch */
+/* Collection grid + product quick-view modal — built from scratch */
 
 .tisso-collection {
   --tisso-black: #000;
   --tisso-white: #fff;
   --tisso-gap: 0.8rem;
 
-  width:100%;
-  padding: 4.8rem 4 rem 6.4rem;
+  width: 100%;
+  padding: 4.8rem 4rem 6.4rem;
   background: var(--tisso-white);
   color: var(--tisso-black);
   font-family: var(--tisso-font-lustria), 'Lustria', serif;
@@ -18,7 +18,7 @@
   box-sizing: border-box;
 }
 
-.tisso-collection_heading {
+.tisso-collection__heading {
   margin: 0 0 2.4rem;
   font-family: var(--tisso-font-lustria), 'Lustria', serif;
   font-size: clamp(2.8rem, 3.2vw, 3.6rem);
@@ -74,7 +74,7 @@
   font-size: 1.3rem;
 }
 
-.tisso-collection__emtpy-item {
+.tisso-collection__empty-item {
   grid-column: 1 / -1;
   aspect-ratio: auto;
   min-height: 0;
@@ -82,7 +82,7 @@
 }
 
 .tisso-collection__hotspot {
-  position:absolute;
+  position: absolute;
   top: var(--hotspot-y, 50%);
   left: var(--hotspot-x, 50%);
   z-index: 2;
@@ -106,7 +106,7 @@
   transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
 }
 
-.tisso-collection__item:hover .tisso-collection_hotspot,
+.tisso-collection__item:hover .tisso-collection__hotspot,
 .tisso-collection__item:focus-within .tisso-collection__hotspot,
 .tisso-collection__hotspot:focus-visible {
   opacity: 1;
@@ -119,11 +119,11 @@
   margin-top: -0.1rem;
 }
 
-/*-----------------------------------------
-  Popup
-  --------------------------------------*/
+/* --------------------------------------------------------------------------
+   Popup
+   -------------------------------------------------------------------------- */
 .tisso-popup {
-  position:fixed;
+  position: fixed;
   inset: 0;
   z-index: 9999;
   display: flex;
@@ -133,7 +133,7 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opcaity 0.25s ease, visibility 0.25s ease;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
 .tisso-popup.is-open {
@@ -154,7 +154,7 @@
 .tisso-popup__dialog {
   position: relative;
   z-index: 1;
-  width: in(52rem, 100%);
+  width: min(52rem, 100%);
   max-height: calc(100vh - 4rem);
   overflow: auto;
   padding: 2.8rem 2.8rem 2.4rem;
@@ -211,7 +211,7 @@
   line-height: 1.25;
 }
 
-.ttiso-popup__price {
+.tisso-popup__price {
   margin: 0 0 1rem;
   font-family: var(--tisso-font-lustria), 'Lustria', serif;
   font-size: 2.2rem;
@@ -264,7 +264,7 @@
   transition: background-color 0.2s ease;
 }
 
-/* ALways show the color strip so each option is identificable */
+/* Always show the color strip so each option is identifiable */
 .tisso-popup__swatch::before {
   content: '';
   position: absolute;
@@ -279,7 +279,7 @@
   width: 5px;
 }
 
-/* Light accents (white, cream, etc.): black edge on the right only so the strip stays visible*/
+/* Light accents (white, cream, etc.): black edge on the right only so the strip stays visible */
 .tisso-popup__swatch[data-swatch-light='true']::before {
   box-shadow: none;
   border: 0;
@@ -382,7 +382,7 @@
   background: #1a1a1a;
   transform: translateY(-2px);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
-  outline:none;
+  outline: none;
 }
 
 .tisso-popup__add:hover:not(:disabled) .tisso-popup__add-arrow,
@@ -426,9 +426,9 @@ body.tisso-popup-open {
     transform: none;
   }
 
-  .tisso-collection__item:hover .tisso-collection_hotspot,
-  .tisso-collection__item:focus-within .tisso-collection_hotspot,
-  .tisso-collection_hotspot:focus-visible {
+  .tisso-collection__item:hover .tisso-collection__hotspot,
+  .tisso-collection__item:focus-within .tisso-collection__hotspot,
+  .tisso-collection__hotspot:focus-visible {
     transform: scale(1.06);
   }
 
