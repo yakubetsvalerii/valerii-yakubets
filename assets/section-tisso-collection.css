@@ -1,0 +1,459 @@
+/* Collection grid + product quick-view modal - built from scratch */
+
+.tisso-collection {
+  --tisso-black: #000;
+  --tisso-white: #fff;
+  --tisso-gap: 0.8rem;
+
+  width:100%;
+  padding: 4.8rem 4 rem 6.4rem;
+  background: var(--tisso-white);
+  color: var(--tisso-black);
+  font-family: var(--tisso-font-lustria), 'Lustria', serif;
+}
+
+.tisso-collection *,
+.tisso-collection *::before,
+.tisso-collection *::after {
+  box-sizing: border-box;
+}
+
+.tisso-collection_heading {
+  margin: 0 0 2.4rem;
+  font-family: var(--tisso-font-lustria), 'Lustria', serif;
+  font-size: clamp(2.8rem, 3.2vw, 3.6rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.tisso-collection__empty {
+  margin: 0;
+  font-family: var(--tisso-font-jost), 'Jost', sans-serif;
+  font-size: 1.4rem;
+  color: #666;
+}
+
+.tisso-collection__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--tisso-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tisso-collection__item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  min-height: 12rem;
+  overflow: hidden;
+  background: #f4f4f4;
+}
+
+.tisso-collection__item script {
+  display: none;
+}
+
+.tisso-collection__image,
+.tisso-collection__item .placeholder-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tisso-collection__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: #efefef;
+  color: #777;
+  font-size: 1.3rem;
+}
+
+.tisso-collection__emtpy-item {
+  grid-column: 1 / -1;
+  aspect-ratio: auto;
+  min-height: 0;
+  background: transparent;
+}
+
+.tisso-collection__hotspot {
+  position:absolute;
+  top: var(--hotspot-y, 50%);
+  left: var(--hotspot-x, 50%);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--tisso-black);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.92);
+  transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
+}
+
+.tisso-collection__item:hover .tisso-collection_hotspot,
+.tisso-collection__item:focus-within .tisso-collection__hotspot,
+.tisso-collection__hotspot:focus-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  outline: none;
+}
+
+.tisso-collection__hotspot span {
+  display: block;
+  margin-top: -0.1rem;
+}
+
+/*-----------------------------------------
+  Popup
+  --------------------------------------*/
+.tisso-popup {
+  position:fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opcaity 0.25s ease, visibility 0.25s ease;
+}
+
+.tisso-popup.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.tisso-popup__overlay {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.tisso-popup__dialog {
+  position: relative;
+  z-index: 1;
+  width: in(52rem, 100%);
+  max-height: calc(100vh - 4rem);
+  overflow: auto;
+  padding: 2.8rem 2.8rem 2.4rem;
+  background: var(--tisso-white);
+  border: 1px solid var(--tisso-black);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
+  font-family: var(--tisso-font-jost), 'Jost', sans-serif;
+  transform: translateY(1.2rem);
+  transition: transform 0.28s ease;
+}
+
+.tisso-popup.is-open .tisso-popup__dialog {
+  transform: translateY(0);
+}
+
+.tisso-popup__close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--tisso-black);
+  font-size: 2.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.tisso-popup__header {
+  display: grid;
+  grid-template-columns: 10.4rem minmax(0, 1fr);
+  gap: 1.6rem;
+  margin-bottom: 2.4rem;
+  padding-right: 2rem;
+}
+
+.tisso-popup__thumb {
+  width: 10.4rem;
+  height: 10.4rem;
+  object-fit: cover;
+  background: #f3f3f3;
+}
+
+.tisso-popup__title {
+  margin: 0 0 0.6rem;
+  font-family: var(--tisso-font-lustria), 'Lustria', serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.ttiso-popup__price {
+  margin: 0 0 1rem;
+  font-family: var(--tisso-font-lustria), 'Lustria', serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.tisso-popup__description {
+  margin: 0;
+  font-family: var(--tisso-font-jost), 'Jost', sans-serif;
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: #222;
+}
+
+.tisso-popup__options {
+  display: grid;
+  gap: 1.8rem;
+  margin-bottom: 2.4rem;
+}
+
+.tisso-popup__option-label {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-family: var(--tisso-font-jost), 'Jost', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.tisso-popup__swatches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.tisso-popup__swatch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 4.4rem;
+  padding: 1rem 1.2rem 1rem 1.8rem;
+  border: 1px solid var(--tisso-black);
+  background: var(--tisso-white);
+  color: var(--tisso-black);
+  font-family: var(--tisso-font-jost), 'Jost', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* ALways show the color strip so each option is identificable */
+.tisso-popup__swatch::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background: var(--swatch-accent, #1f4b99);
+}
+
+.tisso-popup__swatch.is-selected::before {
+  width: 5px;
+}
+
+/* Light accents (white, cream, etc.): black edge on the right only so the strip stays visible*/
+.tisso-popup__swatch[data-swatch-light='true']::before {
+  box-shadow: none;
+  border: 0;
+  border-right: 1px solid #000;
+}
+
+.tisso-popup__swatch.is-selected {
+  background: var(--tisso-black);
+  color: var(--tisso-white);
+}
+
+.tisso-popup__swatch.is-selected:hover,
+.tisso-popup__swatch.is-selected:focus-visible {
+  background: var(--tisso-black);
+  color: var(--tisso-white);
+}
+
+.tisso-popup__swatch:hover,
+.tisso-popup__swatch:focus-visible {
+  background: #f5f5f5;
+  outline: none;
+}
+
+.tisso-popup__swatch:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tisso-popup__select-wrap {
+  position: relative;
+}
+
+.tisso-popup__select {
+  width: 100%;
+  min-height: 4.8rem;
+  padding: 1.1rem 4.8rem 1.1rem 1.2rem;
+  border: 1px solid var(--tisso-black);
+  border-radius: 0;
+  background: var(--tisso-white);
+  color: var(--tisso-black);
+  font-family: var(--tisso-font-jost), 'Jost', sans-serif;
+  font-size: 1.4rem;
+  appearance: none;
+  cursor: pointer;
+}
+
+.tisso-popup__select:focus-visible {
+  outline: 2px solid var(--tisso-black);
+  outline-offset: 2px;
+}
+
+.tisso-popup__select-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.8rem;
+  height: 100%;
+  border-left: 1px solid var(--tisso-black);
+  pointer-events: none;
+}
+
+.tisso-popup__error {
+  min-height: 1.8rem;
+  margin: 0 0 1.2rem;
+  color: #b00020;
+  font-size: 1.3rem;
+}
+
+.tisso-popup__add {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  width: 100%;
+  min-height: 5.2rem;
+  padding: 1.1rem 2.2rem;
+  border: 0;
+  background: var(--tisso-black);
+  color: var(--tisso-white);
+  font-family: var(--tisso-font-jost), 'Jost', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tisso-popup__add-arrow {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tisso-popup__add:hover:not(:disabled),
+.tisso-popup__add:focus-visible:not(:disabled) {
+  background: #1a1a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  outline:none;
+}
+
+.tisso-popup__add:hover:not(:disabled) .tisso-popup__add-arrow,
+.tisso-popup__add:focus-visible:not(:disabled) .tisso-popup__add-arrow {
+  transform: translateX(0.4rem);
+}
+
+.tisso-popup__add:disabled,
+.tisso-popup__add.is-loading {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+body.tisso-popup-open {
+  overflow: hidden;
+}
+
+@media screen and (max-width: 749px) {
+  .tisso-collection {
+    --tisso-gap: 0.6rem;
+    padding: 3.2rem 1.2rem 4.8rem;
+  }
+
+  .tisso-collection__heading {
+    margin-bottom: 1.8rem;
+    font-size: 2.4rem;
+    text-align: center;
+  }
+
+  .tisso-collection__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tisso-collection__hotspot {
+    top: 1.2rem;
+    left: auto;
+    right: 1.2rem;
+    opacity: 1;
+    transform: none;
+  }
+
+  .tisso-collection__item:hover .tisso-collection_hotspot,
+  .tisso-collection__item:focus-within .tisso-collection_hotspot,
+  .tisso-collection_hotspot:focus-visible {
+    transform: scale(1.06);
+  }
+
+  .tisso-popup {
+    padding: 1.2rem;
+    align-items: flex-end;
+  }
+
+  .tisso-popup__dialog {
+    width: 100%;
+    max-height: calc(100vh - 2.4rem);
+    padding: 2.4rem 1.6rem 1.6rem;
+  }
+
+  .tisso-popup__header {
+    grid-template-columns: 8rem minmax(0, 1fr);
+    gap: 1.2rem;
+  }
+
+  .tisso-popup__thumb {
+    width: 8rem;
+    height: 8rem;
+  }
+
+  .tisso-popup__swatches {
+    grid-template-columns: 1fr;
+  }
+}
