@@ -157,7 +157,7 @@
 @media screen and (max-width: 749px) {
   .tisso-banner__hero {
     align-items: stretch;
-    min-height: 52rem;
+    min-height: 42rem;
   }
 
   .tisso-banner__media img,
@@ -172,7 +172,7 @@
     width: 100%;
     max-width: none;
     min-height: 100%;
-    padding: 2.4rem 2rem 0;
+    padding: 6rem 2rem 0;
     text-align: center;
   }
 
@@ -199,7 +199,7 @@
   .tisso-banner__button {
     position: absolute;
     left: 50%;
-    top: 62%;
+    top: 85%;
     z-index: 2;
     transform: translate(-50%, -50%);
   }
